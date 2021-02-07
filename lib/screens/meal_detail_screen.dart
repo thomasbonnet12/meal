@@ -1,3 +1,5 @@
+import 'dart:html';
+
 import 'package:flutter/material.dart';
 
 class MealDetailScreen extends StatelessWidget {
@@ -6,8 +8,13 @@ class MealDetailScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final mealId = ModalRoute.of(context).settings.arguments as String;
-    return Center(
-      child: Text('The meal -$mealId'),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('$mealId'),
+      ),
+      body: Center(
+        child: Text('The meal -$mealId'),
+      ),
     );
   }
 }
