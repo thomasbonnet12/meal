@@ -7,10 +7,11 @@ class CategoryMealsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final routeArgs =
+    //this final below make us able to retrive the title and id from cateory_item.dart that pass through the route and navigator selected category in category_item.dart
+    final categoryTitleAndIdArguments =
         ModalRoute.of(context).settings.arguments as Map<String, String>;
-    final categoryTitle = routeArgs['title'];
-    final categoryId = routeArgs['id'];
+    final categoryTitle = categoryTitleAndIdArguments['title'];
+    final categoryId = categoryTitleAndIdArguments['id'];
     final categoryMeals = DUMMY_MEALS.where((meal) {
       return meal.categories.contains(categoryId);
     }).toList();

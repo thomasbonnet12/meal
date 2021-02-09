@@ -31,10 +31,12 @@ class MealDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    //this final below help us retrieve the argument passed in the route, arguments and String correspond to the ID
-    final mealId = ModalRoute.of(context).settings.arguments as String;
+    //this final below help us retrieve the argument passed in the navigator selectMeal, arguments and String correspond to the ID from meal_item.dart
+    final mealIdArguments = ModalRoute.of(context).settings.arguments as String;
     //this final below help us select the meal information in the data_base.dart through DUMMY_MEALS
-    final selectedMeal = DUMMY_MEALS.firstWhere((meal) => meal.id == mealId);
+    final selectedMeal =
+        DUMMY_MEALS.firstWhere((meal) => meal.id == mealIdArguments);
+
     return Scaffold(
       appBar: AppBar(
         title: Text('${selectedMeal.title}}'),
