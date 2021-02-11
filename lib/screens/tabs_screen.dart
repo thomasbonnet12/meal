@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_meal_app/screens/categories_screen.dart';
 import 'package:flutter_meal_app/screens/favorites_screen.dart';
+import 'package:flutter_meal_app/widgets/main_drawer.dart';
 
 class TabScreen extends StatefulWidget {
   @override
@@ -11,7 +12,7 @@ class _TabScreenState extends State<TabScreen> {
   //Give us access to those pages and we pass those arguments
   final List<Map<String, Object>> _pages = [
     {'page': CategoriesScreen(), 'title': 'Categories'},
-    {'page': Favorites(), 'title': 'Categories'},
+    {'page': Favorites(), 'title': 'Your Favorites'},
   ];
   // Help us to create a switch to access to one or the other value
   int _selectedPageIndex = 0;
@@ -26,6 +27,7 @@ class _TabScreenState extends State<TabScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: MainDrawer(),
       appBar: AppBar(
         title: Text(_pages[_selectedPageIndex]['title']),
       ),
