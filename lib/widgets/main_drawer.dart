@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_meal_app/screens/filter_screen.dart';
 
 class MainDrawer extends StatelessWidget {
   @override
@@ -21,8 +22,16 @@ class MainDrawer extends StatelessWidget {
             ),
           ),
           SizedBox(height: 20),
-          buildListTileMethod('Meals', Icons.restaurant),
-          BuildListTileWidget(title: 'Settings', icon: Icons.settings),
+          buildListTileMethod('Meals', Icons.restaurant, () {
+            Navigator.of(context).pushNamed('/');
+          }),
+          BuildListTileWidget(
+            title: 'Settings',
+            icon: Icons.settings,
+            tapHandlerWidget: () {
+              Navigator.of(context).pushNamed(FilterScreen.routeName);
+            },
+          ),
         ],
       ),
     );
@@ -31,7 +40,7 @@ class MainDrawer extends StatelessWidget {
 
 //Here below I have the method and the widget for the same buildListTile, one is a method and one is a widget
 //I wanted to try both so that's why we have both of the method bellow
-ListTile buildListTileMethod(String title, IconData icon) {
+ListTile buildListTileMethod(String title, IconData icon, Function tapHandler) {
   return ListTile(
     leading: Icon(icon, size: 26),
     title: Text(
@@ -42,18 +51,20 @@ ListTile buildListTileMethod(String title, IconData icon) {
         fontWeight: FontWeight.bold,
       ),
     ),
-    onTap: () {},
+    onTap: tapHandler,
   );
 }
 
 class BuildListTileWidget extends StatelessWidget {
   final String title;
   final IconData icon;
+  final Function tapHandlerWidget;
 
   const BuildListTileWidget({
     Key key,
     this.title,
     this.icon,
+    @required this.tapHandlerWidget,
   }) : super(key: key);
 
   @override
@@ -68,7 +79,7 @@ class BuildListTileWidget extends StatelessWidget {
           fontWeight: FontWeight.bold,
         ),
       ),
-      onTap: () {},
+      onTap: tapHandlerWidget,
     );
   }
 }
