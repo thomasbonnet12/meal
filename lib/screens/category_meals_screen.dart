@@ -1,20 +1,44 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_meal_app/data_base.dart';
+import 'package:flutter_meal_app/models/meal.dart';
 import 'package:flutter_meal_app/widgets/meal_item.dart';
 
-class CategoryMealsScreen extends StatelessWidget {
+class CategoryMealsScreen extends StatefulWidget {
   static const routeName = '/categories-meals';
+
+  @override
+  _CategoryMealsScreenState createState() => _CategoryMealsScreenState();
+}
+
+class _CategoryMealsScreenState extends State<CategoryMealsScreen> {
+  String categoryTitle;
+  List<Meal> categoryMeals;
+  var _loadedInitData = false;
+
+  @override
+  void didChangeDependencies() {
+    if (!_loadedInitData) {
+      final categoryTitleAndIdArguments =
+          ModalRoute.of(context).settings.arguments as Map<String, String>;
+      categoryTitle = categoryTitleAndIdArguments['title'];
+      final categoryId = categoryTitleAndIdArguments['id'];
+      categoryMeals = DUMMY_MEALS.where((meal) {
+        return meal.categories.contains(categoryId);
+      }).toList();
+      _loadedInitData = true;
+    }
+    super.didChangeDependencies();
+  }
+
+  void _removeMeal(String mealIdArgument) {
+    setState(() {
+      categoryMeals.removeWhere((meal) => meal.id == mealIdArgument);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     //this final below make us able to retrive the title and id from cateory_item.dart that pass through the route and navigator selected category in category_item.dart
-    final categoryTitleAndIdArguments =
-        ModalRoute.of(context).settings.arguments as Map<String, String>;
-    final categoryTitle = categoryTitleAndIdArguments['title'];
-    final categoryId = categoryTitleAndIdArguments['id'];
-    final categoryMeals = DUMMY_MEALS.where((meal) {
-      return meal.categories.contains(categoryId);
-    }).toList();
 
     return Scaffold(
       appBar: AppBar(
@@ -29,6 +53,7 @@ class CategoryMealsScreen extends StatelessWidget {
             duration: categoryMeals[index].duration,
             complexity: categoryMeals[index].complexity,
             affordability: categoryMeals[index].affordability,
+            removeItem: _removeMeal,
           );
         },
         itemCount: categoryMeals.length,
