@@ -1,19 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_meal_app/models/meal.dart';
 import 'package:flutter_meal_app/screens/categories_screen.dart';
 import 'package:flutter_meal_app/screens/favorites_screen.dart';
 import 'package:flutter_meal_app/widgets/main_drawer.dart';
 
 class TabScreen extends StatefulWidget {
+  final List<Meal> favoriteMeals;
+
+  const TabScreen(this.favoriteMeals);
+
   @override
   _TabScreenState createState() => _TabScreenState();
 }
 
 class _TabScreenState extends State<TabScreen> {
   //Give us access to those pages and we pass those arguments
-  final List<Map<String, Object>> _pages = [
-    {'page': CategoriesScreen(), 'title': 'Categories'},
-    {'page': Favorites(), 'title': 'Your Favorites'},
-  ];
+  List<Map<String, Object>> _pages;
+
   // Help us to create a switch to access to one or the other value
   int _selectedPageIndex = 0;
 
@@ -22,6 +25,15 @@ class _TabScreenState extends State<TabScreen> {
     setState(() {
       _selectedPageIndex = index;
     });
+  }
+
+  @override
+  void initState() {
+    _pages = [
+      {'page': CategoriesScreen(), 'title': 'Categories'},
+      {'page': Favorites(widget.favoriteMeals), 'title': 'Your Favorites'},
+    ];
+    super.initState();
   }
 
   @override
