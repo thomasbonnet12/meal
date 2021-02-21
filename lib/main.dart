@@ -41,12 +41,28 @@ class _MyAppState extends State<MyApp> {
         if (_filters['vegetarian'] && !meal.isVegetarian) {
           return false;
         }
+
         return true;
       }).toList();
     });
   }
 
-  void _toggleFavorite(String mealId) {}
+  void _toggleFavorite(String mealId) {
+    final existingIndex = _favoriteMeal.indexWhere((meal) => meal.id == mealId);
+    if (existingIndex >= 0) {
+      setState(() {
+        _favoriteMeal.removeAt(existingIndex);
+      });
+    } else {
+      setState(() {
+        _favoriteMeal.add(DUMMY_MEALS.firstWhere((meal) => meal.id == mealId));
+      });
+    }
+  }
+
+  bool _isMealFavorite(String id) {
+    return _favoriteMeal.any((meal) => meal.id == id);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -72,7 +88,8 @@ class _MyAppState extends State<MyApp> {
         '/': (ctx) => TabScreen(_favoriteMeal),
         CategoryMealsScreen.routeName: (ctx) =>
             CategoryMealsScreen(_availableMeals),
-        MealDetailScreen.routeName: (ctx) => MealDetailScreen(),
+        MealDetailScreen.routeName: (ctx) =>
+            MealDetailScreen(_toggleFavorite, _isMealFavorite),
         FilterScreen.routeName: (ctx) => FilterScreen(_filters, _setFilters),
       },
       // onGenerateRoute: (settings) {
